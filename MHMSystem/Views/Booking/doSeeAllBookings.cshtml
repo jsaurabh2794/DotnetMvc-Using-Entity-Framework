@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "All Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row" style="margin-top:5%">
+        <div class="col-md-12">
+            <h3 class="text-info">All Bookings List</h3>
+            <table class="table table-light text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Booking Id</th>
+                        <th scope="col">User Id</th>
+                        <th scope="col">Hall Name</th>
+                        <th scope="col">From Date</th>
+                        <th scope="col">To Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.allBookings != null)
+                    {
+                        @foreach (var item in (List<Bookings>)ViewBag.allBookings)
+                        {
+                    <tr>
+                        <th scope="row">@item.bookingId</th>
+                        <td>@item.userId</td>
+                        <td>@item.bookingHallname</td>
+                        <td>@item.fromDate</td>
+                        <td>@item.toDate</td>
+                    </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+

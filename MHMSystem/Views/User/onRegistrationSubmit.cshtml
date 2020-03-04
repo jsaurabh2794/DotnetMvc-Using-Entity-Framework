@@ -1,0 +1,11 @@
+﻿@model MHMSystem.Models.User
+@{
+    ViewData["Title"] = "onRegistrationSubmit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">You have been Successfully Registered!!.</h1>
+<h3 class="text-center text-primary">UserId: @ViewBag.userId</h3>
+<p class="text-center">Note: Please use this userid to login.</p>
+<center><a class="text-center text-info font-weight-bold text-danger" asp-action="doLogin">Login</a></center>
+

@@ -1,0 +1,31 @@
+﻿@using MHMSystem.Models
+@{
+    ViewData["Title"] = "Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="margin-top: 10%;">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h5 class="text-center">Please Modify Here</h5>
+        <form method="POST" action="doSubmitAfterEdit">
+            <input type="hidden" value="@((ViewBag.booking).bookingId)" name="bookingId"/>
+            <div class="form-group">
+                <label for="marriageHall">Select the Marriage Hall</label>
+                <select class="form-control" id="marriageHall" name="marriageHall">
+                    <option value="@((ViewBag.booking).hallId)">@((ViewBag.booking).bookingHallname)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fromDate">From Date</label>
+                <input type="date" id="fromDate" name="fromDate" class="form-control" value="@((ViewBag.booking).fromDate)">
+            </div>
+            <div class="form-group">
+                <label for="toDate">To Date</label>
+                <input type="date" id="toDate" name="toDate" class="form-control" value="@((ViewBag.booking).toDate)">
+            </div>
+            <center><button type="submit" class="btn btn-outline-primary font-weight-bolder"> Update </button></center>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>

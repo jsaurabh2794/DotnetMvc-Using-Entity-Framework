@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row" style="margin-top:5%">
+        <div class="col-md-12">
+            <h3 class="text-info">Please edit and delete your bookings from here!</h3>
+            <a class="btn btn-primary text-white float-right m-1" asp-action="doCreateBooking">Book Now</a>
+            <table class="table table-light text-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Booking Id</th>
+                        <th scope="col">Hall Name</th>
+                        <th scope="col">From Date</th>
+                        <th scope="col">To Date</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.allBookings != null)
+                    {
+                        @foreach (var item in (List<Bookings>)ViewBag.allBookings)
+                        {
+                            <tr>
+                                <th scope="row">@item.bookingId</th>
+                                <td>@item.bookingHallname</td>
+                                <td>@item.fromDate</td>
+                                <td>@item.toDate</td>
+                                <td><a class="btn btn-primary text-white" asp-action="doEdit" asp-route-bookingId="@item.bookingId">Modify</a>  <a class="btn btn-danger text-white" onclick="doDelete(@item.bookingId)">Delete</a></td>
+                            </tr>
+
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+

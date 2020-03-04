@@ -1,0 +1,29 @@
+﻿@model MHMSystem.Models.User
+@{
+    ViewData["Title"] = "doRegister";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Please Update yourself!!</h1>
+<form method="POST" action="doSubmitEdit">
+    <div class="form-row">
+        <input type="hidden" name="userId" value="@ViewBag.user.userId" />
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">First Name</label>
+            <input type="text" class="form-control" name="firstName" placeholder="First Name" value="@ViewBag.user.firstName">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputPassword4">Last Name</label>
+            <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="@ViewBag.user.lastName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" placeholder="abc@xyz.com" value="@ViewBag.user.email">
+    </div>
+    <div class="form-group">
+        <label for="Mob">Mobile</label>
+        <input type="number" class="form-control" name="mobile" placeholder="XXXXXXXXXX" value="@ViewBag.user.mobile">
+    </div>
+    <center><button type="submit" class="btn btn-outline-primary font-weight-bolder">Update</button></center>
+</form>

@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" style="margin-top: 10%;">
+    <div class="col-md-6">
+        <h3 class="text-info text-center">Already booked on these dates</h3>
+        <table class="table table-light text-center table-bordered table-striped overflow-hidden">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Hall Name</th>
+                    <th scope="col">From Date</th>
+                    <th scope="col">To Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.bookingList != null)
+                {
+                    @foreach (var item in (List<Bookings>)ViewBag.bookingList)
+                    {
+                        <tr>
+                            <td>@item.bookingHallname</td>
+                            <td>@item.fromDate</td>
+                            <td>@item.toDate</td>
+                        </tr>
+
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h5 class="text-center text-info">Please Fill the Details to Book</h5>
+        <form method="POST" action="doBookHall">
+            <div class="form-group">
+                <label for="marriageHall">Select the Marriage Hall</label>
+                <select class="form-control" id="marriageHall" name="marriageHall">
+                    <option>--Select--</option>
+                    @if (ViewBag.marriageHallList != null)
+                    {
+                        @foreach (var item in (List<MarriageHall>)ViewBag.marriageHallList)
+                        {
+                            <option value="@item.hallId">@item.hallName</option>
+                        }
+
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fromDate">From Date</label>
+                <input type="date" id="fromDate" name="fromDate" max="2020-12-30"
+                       min="2020-01-01" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="toDate">To Date</label>
+                <input type="date" id="toDate" name="toDate" max="2020-12-30"
+                       min="2020-01-01" class="form-control">
+            </div>
+            <center><button type="submit" class="btn btn-outline-primary font-weight-bolder"> Book </button></center>
+        </form>
+    </div>
+</div>

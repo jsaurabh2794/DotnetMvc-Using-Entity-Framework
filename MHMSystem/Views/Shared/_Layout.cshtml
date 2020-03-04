@@ -1,0 +1,87 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor httpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Marriage Hall Management</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="background-color:#ECECC2">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-monospace" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/2.png" width="30" height="30" alt="img">
+                    MHMS
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li>
+                            @if (string.Equals(httpContextAccessor.HttpContext.Session.GetString("firstName"),"Admin"))
+                            {
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doSeeAllBookings">All Bookings</a>
+                            }
+                        </li>
+                        @if (httpContextAccessor.HttpContext.Session.GetString("firstName") == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="User" asp-action="doRegister">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="User" asp-action="doLogin">Login</a>
+                            </li>
+                        }
+                        @if (httpContextAccessor.HttpContext.Session.GetString("firstName") != null && !string.Equals(httpContextAccessor.HttpContext.Session.GetString("firstName"),"Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doModifyView">View/Modify Booking</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doCreateBooking">Create Booking</a>
+                            </li>
+                        }
+                        @if (httpContextAccessor.HttpContext.Session.GetString("firstName") != null)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hi, @httpContextAccessor.HttpContext.Session.GetString("firstName")
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-action="doView" asp-controller="User">View Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-action="doLogout" asp-controller="User">Logout</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - MHMSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

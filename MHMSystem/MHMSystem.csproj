@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\ApplicationDbContextForBookingsMigrations\20200301131430_addBookingsToDb1.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextForBookingsMigrations\20200301131430_addBookingsToDb1.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextForMarriageHallMigrations\20200301143911_addMarriageHallToDb.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextForMarriageHallMigrations\20200301143911_addMarriageHallToDb.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextForMarriageHallMigrations\20200301185057_addMarriageHallToDb_new.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextForMarriageHallMigrations\20200301185057_addMarriageHallToDb_new.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+
+
+</Project>
