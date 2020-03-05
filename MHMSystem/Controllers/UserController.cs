@@ -135,7 +135,7 @@ namespace MHMSystem.Controllers
         public bool checkSessionIsValidOrNot()
         {
             string firstName = HttpContext.Session.GetString("firstName");
-            if (firstName == null)
+            if (firstName == null || string.Equals("Admin", firstName))
             {
                 return true;
             }

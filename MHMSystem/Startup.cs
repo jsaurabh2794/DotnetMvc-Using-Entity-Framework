@@ -38,6 +38,9 @@ namespace MHMSystem
             services.AddDbContext<ApplicationDbContextForMarriageHall>(
                options => options.UseSqlite(
                    Configuration.GetConnectionString("DataSource")));
+            services.AddDbContext<ApplicationDbContextForHallBookingDates>(
+               options => options.UseSqlite(
+                   Configuration.GetConnectionString("DataSource")));
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }

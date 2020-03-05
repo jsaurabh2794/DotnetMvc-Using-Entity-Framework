@@ -7,7 +7,7 @@
 <div class="row" style="margin-top: 10%;">
     <div class="col-md-6">
         <h3 class="text-info text-center">Already booked on these dates</h3>
-        <table class="table table-light text-center table-bordered table-striped overflow-hidden">
+        <table class="table table-light text-center table-bordered overflow-hidden">
             <thead class="thead-light">
                 <tr>
                     <th scope="col">Hall Name</th>
@@ -18,10 +18,10 @@
             <tbody>
                 @if (ViewBag.bookingList != null)
                 {
-                    @foreach (var item in (List<Bookings>)ViewBag.bookingList)
+                    @foreach (var item in (List<HallBookingDates>)ViewBag.bookingList)
                     {
                         <tr>
-                            <td>@item.bookingHallname</td>
+                            <td>@item.hallName</td>
                             <td>@item.fromDate</td>
                             <td>@item.toDate</td>
                         </tr>
@@ -34,18 +34,32 @@
     </div>
     <div class="col-md-6">
         <h5 class="text-center text-info">Please Fill the Details to Book</h5>
-        <form method="POST" action="doBookHall">
+        <form method="POST" action="doBookHall" onsubmit="return validateForm()" name="bookingForm">
             <div class="form-group">
                 <label for="marriageHall">Select the Marriage Hall</label>
-                <select class="form-control" id="marriageHall" name="marriageHall">
-                    <option>--Select--</option>
+                <select class="form-control" id="marriageHall" name="marriageHall" onchange="loadBookingDates()">
+                    <option value="">--Select--</option>
                     @if (ViewBag.marriageHallList != null)
                     {
                         @foreach (var item in (List<MarriageHall>)ViewBag.marriageHallList)
                         {
-                            <option value="@item.hallId">@item.hallName</option>
-                        }
+                            @if (ViewBag.selectedHallId != null)
+                            {
+                                @if ((Int32)ViewBag.selectedHallId == item.hallId)
+                                {
+                                    <option value="@item.hallId" selected>@item.hallName</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.hallId">@item.hallName</option>
+                                }
 
+                            }
+                            else
+                            {
+                                <option value="@item.hallId">@item.hallName</option>
+                            }
+                        }
                     }
                 </select>
             </div>
@@ -61,5 +75,9 @@
             </div>
             <center><button type="submit" class="btn btn-outline-primary font-weight-bolder"> Book </button></center>
         </form>
+        @if (TempData["error"] != null)
+        {
+            <h6 class="text-danger text-center">@TempData["error"]</h6>
+        }
     </div>
 </div>

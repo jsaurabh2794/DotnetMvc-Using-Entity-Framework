@@ -13,12 +13,14 @@ namespace MHMSystem.Controllers
         private readonly ApplicationDbContextForBookings applicationDbContextForBookings;
         private readonly ApplicationDbContextForMarriageHall applicationDbContextForMarriageHall;
         private readonly ApplicationDbContext applicationDbContextForUser;
+        private readonly ApplicationDbContextForHallBookingDates applicationDbContextForHallBookingDates;
 
-        public BookingController(ApplicationDbContextForBookings applicationDbContextForBookings, ApplicationDbContextForMarriageHall applicationDbContextForMarriageHall, ApplicationDbContext applicationDbContextForUser)
+        public BookingController(ApplicationDbContextForBookings applicationDbContextForBookings, ApplicationDbContextForMarriageHall applicationDbContextForMarriageHall, ApplicationDbContext applicationDbContextForUser, ApplicationDbContextForHallBookingDates applicationDbContextForHallBookingDates)
         {
             this.applicationDbContextForBookings = applicationDbContextForBookings;
             this.applicationDbContextForMarriageHall = applicationDbContextForMarriageHall;
             this.applicationDbContextForUser = applicationDbContextForUser;
+            this.applicationDbContextForHallBookingDates = applicationDbContextForHallBookingDates;
         }
         public IActionResult Index()
         {
@@ -87,16 +89,25 @@ namespace MHMSystem.Controllers
 
             return RedirectToAction("doModifyView");
         }
-        public IActionResult doCreateBooking()
+        public IActionResult doCreateBooking(int? hallId)
         {
             if (checkSessionIsValidOrNot())
             {
                 return RedirectToAction("doLogin", "User");
             }
             var marriageHalls = this.applicationDbContextForMarriageHall.MarriageHall.ToList<MarriageHall>();
-            var bookingList = this.applicationDbContextForBookings.bookings.ToList<Bookings>();
             ViewBag.marriageHallList = marriageHalls;
-            ViewBag.bookingList = bookingList;
+            if(TempData["hallId"] != null)
+            {
+                hallId = Int32.Parse(TempData["hallId"].ToString());
+            }
+            if (hallId >= 0)
+            {
+                var marriageHallsBookedDates = this.applicationDbContextForHallBookingDates.HallBookingDates.Where(x=>x.hallId == hallId).ToList<HallBookingDates>();
+                ViewBag.bookingList = marriageHallsBookedDates;
+                ViewBag.selectedHallId = hallId;
+            }
+            TempData.Remove("hallId");
             return View();
         }
 
@@ -106,11 +117,65 @@ namespace MHMSystem.Controllers
             {
                 return RedirectToAction("doLogin", "User");
             }
-
+            bool isHallAvailable = true;
             string hallId = formData["marriageHall"];
             string fromDate = formData["fromDate"];
             string toDate = formData["toDate"];
             int userId = (int)HttpContext.Session.GetInt32("userId");
+
+            
+
+            /*check hall is available for booking on specefied date*/
+            var allBookingDatesForHall = this.applicationDbContextForHallBookingDates.HallBookingDates.Where(x => x.hallId == Int32.Parse(hallId)).ToList<HallBookingDates>();
+            DateTime fromDateNew = Convert.ToDateTime(fromDate);
+            DateTime toDateNew = Convert.ToDateTime(toDate);
+
+            /*FromDate should be less than ToDate* and both should be greater or equal to system date*/
+            if(fromDateNew.CompareTo(DateTime.Today) < 0 || toDateNew.CompareTo(DateTime.Today) < 0)
+            {
+                TempData["error"] = "FromDate and ToDate should be equal or greater than system date.";
+                TempData["hallId"] = hallId;
+                return RedirectToAction("doCreateBooking");
+            }
+            else if(fromDateNew.CompareTo(toDateNew) > 0)
+            {
+                TempData["error"] = "FromDate should be less than or equal to ToDate.";
+                TempData["hallId"] = hallId;
+                return RedirectToAction("doCreateBooking");
+            }
+            /*FromDate should be less than ToDate* and both should be greater or equal to system date*/
+
+
+            DateTime dbFromDate = new DateTime();
+            DateTime dbToDate = new DateTime();
+            foreach (var item in allBookingDatesForHall)
+            {
+                dbFromDate = Convert.ToDateTime(item.fromDate);
+                dbToDate = Convert.ToDateTime(item.toDate);
+                if (dbFromDate.CompareTo(fromDateNew)<=0 && dbToDate.CompareTo(toDateNew) >= 0)
+                {
+                    isHallAvailable = false;
+                    break;
+                }else if(dbFromDate.CompareTo(fromDateNew) >= 0 && dbToDate.CompareTo(toDateNew) >= 0 && dbFromDate.CompareTo(toDateNew) <= 0)
+                {
+                    isHallAvailable = false;
+                    break;
+                }
+                else if(dbFromDate.CompareTo(fromDateNew) <= 0 && dbToDate.CompareTo(fromDateNew) >=0)
+                {
+                    isHallAvailable = false;
+                    break;
+                }
+            }
+            if(!isHallAvailable)
+            {
+                TempData["error"] = "Hall is not available between " + fromDate + " and " + toDate;
+                TempData["hallId"] = hallId;
+                return RedirectToAction("doCreateBooking");
+            }
+            /*check hall is available for booking on specefied date*/
+
+
 
             Bookings bookings = new Bookings();
             bookings.hallId =Int32.Parse(hallId);
@@ -128,6 +193,14 @@ namespace MHMSystem.Controllers
             this.applicationDbContextForUser.Users.Update(user);
             this.applicationDbContextForUser.SaveChanges();
 
+            HallBookingDates bookingDates = new HallBookingDates();
+            bookingDates.hallId = Int32.Parse(hallId);
+            bookingDates.hallName = "HallName_" + hallId;
+            bookingDates.fromDate = fromDate;
+            bookingDates.toDate = toDate;
+            this.applicationDbContextForHallBookingDates.HallBookingDates.Add(bookingDates);
+            this.applicationDbContextForHallBookingDates.SaveChanges();
+
 
             return RedirectToAction("doModifyView");
         }
@@ -135,7 +208,7 @@ namespace MHMSystem.Controllers
         public bool checkSessionIsValidOrNot()
         {
             string firstName = HttpContext.Session.GetString("firstName");
-            if (firstName == null)
+            if (firstName == null || string.Equals("Admin",firstName))
             {
                 return true;
             }

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace MHMSystem.Models
 {
-    public class MarriageHall
+    public class HallBookingDates
     {
         [Key]
+        public int id { get; set; }
         public int hallId { get; set; }
-
-        [Required]
         public string hallName { get; set; }
-
-        public string hallAddress { get; set; }
+        public string fromDate { get; set; }
+        public string toDate { get; set; }
     }
 }

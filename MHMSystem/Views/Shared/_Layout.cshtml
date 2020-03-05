@@ -29,7 +29,7 @@
                         <li>
                             @if (string.Equals(httpContextAccessor.HttpContext.Session.GetString("firstName"),"Admin"))
                             {
-                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doSeeAllBookings">All Bookings</a>
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doSeeAllBookings">All-Bookings</a>
                             }
                         </li>
                         @if (httpContextAccessor.HttpContext.Session.GetString("firstName") == null)
@@ -44,10 +44,10 @@
                         @if (httpContextAccessor.HttpContext.Session.GetString("firstName") != null && !string.Equals(httpContextAccessor.HttpContext.Session.GetString("firstName"),"Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doModifyView">View/Modify Booking</a>
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doModifyView">View/Modify </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doCreateBooking">Create Booking</a>
+                                <a class="nav-link text-dark text-monospace" asp-area="" asp-controller="Booking" asp-action="doCreateBooking">Create</a>
                             </li>
                         }
                         @if (httpContextAccessor.HttpContext.Session.GetString("firstName") != null)
@@ -76,7 +76,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - MHMSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - MHMSystem - All Rights are Reserved.
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
