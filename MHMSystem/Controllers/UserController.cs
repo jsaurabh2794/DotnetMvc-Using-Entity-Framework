@@ -42,10 +42,6 @@ namespace MHMSystem.Controllers
         }
         public IActionResult doLogout()
         {
-            if (checkSessionIsValidOrNot())
-            {
-                return RedirectToAction("doLogin", "User");
-            }
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
