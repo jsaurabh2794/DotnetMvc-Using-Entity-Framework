@@ -6,7 +6,9 @@
     <div class="row" style="margin-top: 15%;">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <h5 class="text-center">Please Login With UserId</h5>
+            <div class="card bg-light mb-3" style="max-width: 18rem;">
+             <div class="card-header text-center">Please Login With UserId</div>
+             <div class="card-body">
             <form method="POST" action="onSubmitLogin">
                 <div class="form-group">
                     <input type="text" class="form-control" name="requestId" placeholder="Enter Your RequestId" required>
@@ -17,6 +19,7 @@
             {
                 <p class="text-danger text-center" style="margin-top:auto">@ViewBag.errorMessage</p>
             }
+            </div>
         </div>
         <div class="col-md-4"></div>
     </div>
